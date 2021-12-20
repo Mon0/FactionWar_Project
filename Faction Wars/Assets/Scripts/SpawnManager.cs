@@ -24,6 +24,11 @@ public class SpawnManager : MonoBehaviour
     public float ExTimer;
     public float ErrorTimer;
 
+    float spawnTimer;
+    float spawnDelay;
+    float upgradeTimer;
+    float upgradeDelay;
+
     public TMP_Text PlayerG;
     public TMP_Text EnemyG;
     public TMP_Text PlayerError;
@@ -44,6 +49,9 @@ public class SpawnManager : MonoBehaviour
 
         GoodGoldAdd = 1;
         EvilGoldAdd = 1; //Player and AI both start off gaining 1 gold per second 
+
+        spawnDelay = 5f;
+        upgradeDelay = 3f;
     }
 
     // Update is called once per frame
@@ -64,6 +72,20 @@ public class SpawnManager : MonoBehaviour
             ExTimer = 0f;
             EnemyError.enabled = false;
             PlayerError.enabled = false;
+        }
+
+        spawnTimer += Time.deltaTime;
+        if (spawnTimer >= spawnDelay)
+        {
+            spawnTimer = 0f;
+            SpawnEnemy();
+        }
+
+        upgradeTimer += Time.deltaTime;
+        if (upgradeTimer >= upgradeDelay)
+        {
+            upgradeTimer = 0f;
+            EnemyUpgrade();
         }
     }
 
@@ -90,7 +112,7 @@ public class SpawnManager : MonoBehaviour
     public void EnemyUpgrade()
     {
         EnemyMoney -= EvilUpgrade;
-        EvilUpgrade++;
+        EvilUpgrade = EvilUpgrade + 1;
         EvilGoldAdd += EvilUpgrade;
     }
 
@@ -117,7 +139,7 @@ public class SpawnManager : MonoBehaviour
     public void PlayerUpgrade()
     {
         PlayerMoney -= GoodUpgrade;
-        GoodUpgrade++;
+        GoodUpgrade = GoodUpgrade + 1;
         GoodGoldAdd += GoodUpgrade;
     }
 
